@@ -5,7 +5,7 @@
     <link rel="icon" type="image/jpeg" href="https://cdn4.telesco.pe/file/sQ_5R7hu4kfYWwDXAr-81c6yDusZxY35IlnCLOJJHp5fH8D3hDYs1Szm9gZ_uO-FB_209Y-PeJ6WEF2_2Axclt_h0PJXjE4wrPpTtqZpKOszFsYTP-d4CQnghs6POTnM09T2BQWvEVzm4cB8HeuhYgd9bQtTj3BXqPJJiF3negQuErleTkTpJCM_Ly-FT7C5dBiIERLiQ-Wh6-mdJbW476bowvAQXV2nfP5mPGSzTsWf1ldEmwsWVBeS05_3YslBXl2gr7kyL1dVkFf3T4Rj_jgYE_1TKvfSXuFnyU-ecnCYx5Rx4D5yFx7wJuJR01HucnvB9-6R9f8nDw3mG2Jpeg.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <title>رُوّاد السينما ᵀᴿ</title>
+ <title>رُوّاد السينما ᵀᴿ</title>
     <style>
         :root {
             --primary: #960000;
@@ -45,19 +45,35 @@
 
         @keyframes fadeIn { from { opacity:0; transform:translateY(30px) scale(0.95); } to { opacity:1; transform:translateY(0) scale(1); } }
 
+        /* --- تأثير الموجات النابضة (Pulse Wave) --- */
         .logo {
-            width: 110px; height: 110px; margin: 0 auto 25px;
-            background: rgba(0, 0, 0, 0.3); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            position: relative; box-shadow: 0 15px 35px rgba(150, 0, 0, 0.3);
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(150, 0, 0, 0.3);
             animation: float 6s ease-in-out infinite;
         }
 
         .logo::before, .logo::after {
-            content:''; position:absolute; top:50%; left:50%; width:80%; height:80%;
-            background: var(--accent); border-radius:50%; transform:translate(-50%,-50%);
-            z-index:0; opacity:0.5;
+            content:'';
+            position:absolute;
+            top:50%;
+            left:50%;
+            width:80%;
+            height:80%;
+            background: var(--accent);
+            border-radius:50%;
+            transform:translate(-50%,-50%);
+            z-index:0;
+            opacity:0.5;
         }
+
         .logo::before { animation: pulse-wave 3s linear infinite; }
         .logo::after { animation: pulse-wave 3s linear 1.5s infinite; }
 
@@ -65,61 +81,158 @@
             0% { transform:translate(-50%,-50%) scale(1); opacity:0.5; } 
             100% { transform:translate(-50%,-50%) scale(1.8); opacity:0; } 
         }
-        @keyframes float { 0%, 100% { transform:translateY(0) rotate(0deg); } 50% { transform:translateY(-15px) rotate(5deg); } }
+        
+        @keyframes float { 
+            0%, 100% { transform:translateY(0) rotate(0deg); } 
+            50% { transform:translateY(-15px) rotate(5deg); } 
+        }
 
-        .logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; position: relative; z-index: 2; border: 2px solid var(--accent); }
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            border: 2px solid var(--accent);
+        }
 
         h1 {
-            font-size: 2rem; margin-bottom: 15px;
+            font-size: 2rem;
+            margin-bottom: 15px;
             background: linear-gradient(45deg, #fff 30%, var(--accent) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
         }
 
         .description { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 30px; }
 
         .domain-display {
-            background: rgba(212, 175, 55, 0.05); padding: 16px; border-radius: 6px; margin: 30px 0;
-            font-family: 'Courier New', monospace; font-size: 1.2rem; color: var(--accent);
-            direction: ltr; border: 1px solid rgba(212, 175, 55, 0.2); backdrop-filter: blur(10px);
+            background: rgba(212, 175, 55, 0.05);
+            padding: 16px;
+            border-radius: 6px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            color: var(--accent);
+            direction: ltr;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 35px 0; }
-        .stat-card { background: rgba(255, 255, 255, 0.03); padding: 20px 15px; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.1); }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-5px); border-color: var(--accent); }
         .stat-number { font-size: 1.8rem; font-weight: 800; color: var(--accent); display: block; margin-bottom: 8px; }
         .stat-label { font-size: 0.9rem; color: var(--text-secondary); }
 
         .join-btn {
-            display: block; width: 100%; padding: 22px;
+            display: block;
+            width: 100%;
+            padding: 22px;
             background: linear-gradient(135deg, var(--primary) 0%, #600000 100%);
-            color: white; text-decoration: none; border-radius: 8px; font-size: 1.4rem; font-weight: 700;
-            border: 1px solid var(--accent); cursor: pointer; transition: all 0.4s;
-            position: relative; overflow: hidden; margin: 35px 0 25px;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            border: 1px solid var(--accent);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            margin: 35px 0 25px;
             box-shadow: 0 12px 35px rgba(150, 0, 0, 0.4);
         }
+
+        .join-btn:hover { transform: translateY(-6px); box-shadow: 0 20px 45px rgba(212, 175, 55, 0.2); }
+        
         .join-btn::after {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
             background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
-            transform: rotate(30deg); transition: 0.6s;
+            transform: rotate(30deg);
+            transition: transform 0.6s;
         }
         .join-btn:hover::after { transform: rotate(30deg) translate(15%, 15%); }
 
-        .loader { display: none; width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+        .loader { display: none; width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 30px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* الأنماط الديناميكية للرسائل */
-        .dynamic-msg {
-            padding: 15px; border-radius: 10px; margin-bottom: 20px; font-weight: 600;
-            display: none; border: 1px solid rgba(255,255,255,0.2); animation: fadeIn 0.5s;
+        .browser-warning {
+            background: linear-gradient(135deg, #d4af37 0%, #f1d382 100%);
+            color: #1a0a0a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 2px solid #a6892c;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
         }
 
-        .info-note { color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px; }
+        .browser-warning h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #8b0000; }
+
+        .fade-in { animation: fadeInUp 0.8s ease forwards; opacity: 0; transform: translateY(20px); }
+        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; } .delay-4 { animation-delay: 0.4s; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .info-note { color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px; line-height: 1.5; }
+        
+        .external-btn {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            border: none;
+            padding: 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 35px 0 25px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .app-name { font-weight: bold; color: #8b0000; padding: 2px 6px; background: rgba(139, 0, 0, 0.1); border-radius: 4px; }
+        
+        .copy-instructions {
+            background: linear-gradient(135deg, #d4af37 0%, #a6892c 100%);
+            color: #1a0a0a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid #8b0000;
+            text-align: center;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="statusMsg" class="dynamic-msg"></div>
+        <div id="browserWarning" class="browser-warning" style="display: none;"></div>
         
-        <div class="logo">
+        <div class="logo fade-in">
             <img src="https://cdn4.telesco.pe/file/sQ_5R7hu4kfYWwDXAr-81c6yDusZxY35IlnCLOJJHp5fH8D3hDYs1Szm9gZ_uO-FB_209Y-PeJ6WEF2_2Axclt_h0PJXjE4wrPpTtqZpKOszFsYTP-d4CQnghs6POTnM09T2BQWvEVzm4cB8HeuhYgd9bQtTj3BXqPJJiF3negQuErleTkTpJCM_Ly-FT7C5dBiIERLiQ-Wh6-mdJbW476bowvAQXV2nfP5mPGSzTsWf1ldEmwsWVBeS05_3YslBXl2gr7kyL1dVkFf3T4Rj_jgYE_1TKvfSXuFnyU-ecnCYx5Rx4D5yFx7wJuJR01HucnvB9-6R9f8nDw3mG2Jpeg.jpg" alt="Logo">
         </div>
         
@@ -137,94 +250,103 @@
         <button class="join-btn fade-in delay-4" id="mainActionBtn">انضم إلى القناة الآن</button>
         <div class="loader" id="loader"></div>
         
-        <div class="info-note fade-in delay-4">سيتم توجيهك إلى قناة Telegram الخاصة بنا</div>
+        <div class="success-message" id="successMessage">جاري فتح المتصفح الخارجي...</div>
+        <div class="copy-instructions" id="copyInstructions"></div>
+        
+        <div class="info-note fade-in delay-4">سيتم توجيهك إلى قناة Telegram الخاصة بنا دون عرض رابط الدعوة</div>
     </div>
 
     <script>
         (function() {
-            const config = {
-                url: 'https://telegram.rwadcenima.com',
-                tgDeep: 'tg://join?invite=DRdbnp-OPVkyZjAy',
-                tgWeb: 'https://t.me/+DRdbnp-OPVkyZjAy'
+            const REAL_LINKS = {
+                telegramDeep: 'tg://join?invite=DRdbnp-OPVkyZjAy',
+                telegramWeb: 'https://t.me/+DRdbnp-OPVkyZjAy',
+                customDomain: 'https://telegram.rwadcenima.com'
             };
 
-            const btn = document.getElementById('mainActionBtn');
-            const loader = document.getElementById('loader');
-            const msgBox = document.getElementById('statusMsg');
-
-            // قاعدة بيانات هوية التطبيقات
-            const appsIdentity = {
-                facebook: { name: 'فيسبوك', color: '#1877F2', bg: 'rgba(24, 119, 242, 0.2)' },
-                instagram: { name: 'إنستجرام', color: '#E4405F', bg: 'rgba(228, 64, 95, 0.2)' },
-                messenger: { name: 'ماسنجر', color: '#00B2FF', bg: 'rgba(0, 178, 255, 0.2)' },
-                telegram: { name: 'تليجرام', color: '#229ED9', bg: 'rgba(34, 158, 217, 0.2)' },
-                snapchat: { name: 'سناب شات', color: '#FFFC00', bg: 'rgba(255, 252, 0, 0.1)' },
-                default: { name: 'تطبيق خارجي', color: '#d4af37', bg: 'rgba(212, 175, 55, 0.2)' }
+            const elements = {
+                mainActionBtn: document.getElementById('mainActionBtn'),
+                loader: document.getElementById('loader'),
+                browserWarning: document.getElementById('browserWarning'),
+                successMessage: document.getElementById('successMessage'),
+                copyInstructions: document.getElementById('copyInstructions')
             };
 
-            function getAppInfo() {
+            let appOpened = false;
+
+            const detectBrowser = () => {
                 const ua = navigator.userAgent || navigator.vendor || window.opera;
-                if (/FBAN|FBAV/i.test(ua)) return appsIdentity.facebook;
-                if (/Instagram/i.test(ua)) return appsIdentity.instagram;
-                if (/Messenger/i.test(ua)) return appsIdentity.messenger;
-                if (/Telegram/i.test(ua)) return appsIdentity.telegram;
-                if (/Snapchat/i.test(ua)) return appsIdentity.snapchat;
-                return (/wv|Embedded/i.test(ua)) ? appsIdentity.default : null;
-            }
+                const isEmbedded = /FBAN|FBAV|Instagram|Twitter|LinkedIn|Snapchat|wv/i.test(ua);
+                return { isEmbedded, ua };
+            };
 
-            function showStatus(text, app, isPermanent = false) {
-                msgBox.textContent = text;
-                msgBox.style.display = 'block';
-                msgBox.style.color = app.color;
-                msgBox.style.backgroundColor = app.bg;
-                msgBox.style.borderColor = app.color;
+            // دالة استعادة حالة الزر الأصلية
+            const resetButtonState = () => {
+                elements.mainActionBtn.style.display = 'block';
+                elements.loader.style.display = 'none';
+                appOpened = false;
+            };
 
-                if (!isPermanent) {
-                    setTimeout(() => { 
-                        msgBox.style.display = 'none'; 
-                        btn.style.display = 'block';
-                        loader.style.display = 'none';
-                    }, 10000);
-                }
-            }
+            const openTelegramDirectly = () => {
+                elements.mainActionBtn.style.display = 'none';
+                elements.loader.style.display = 'block';
 
-            const appInfo = getAppInfo();
-
-            // عند فتح الصفحة داخل متصفح مضمن
-            if (appInfo) {
-                showStatus(`أنت تستخدم تطبيق ${appInfo.name}. يرجى الضغط للفتح في متصفح خارجي لضمان عمل القناة.`, appInfo, true);
-                btn.textContent = "الفتح في متصفح خارجي";
-            }
-
-            btn.addEventListener('click', () => {
-                const currentApp = appInfo || appsIdentity.default;
+                window.location.href = REAL_LINKS.telegramDeep;
                 
-                btn.style.display = 'none';
-                loader.style.display = 'block';
-                showStatus(`جاري الفتح في متصفح خارجي من تطبيق ${currentApp.name}...`, currentApp);
-
-                if (/Android/i.test(navigator.userAgent)) {
-                    const intent = `intent://${config.url.replace(/^https?:\/\//, '')}#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.chrome;end`;
-                    window.location.href = intent;
-                } else {
-                    window.location.href = config.url;
-                }
-
-                // محاولة فتح تليجرام مباشرة كخيار إضافي للمتصفحات العادية
-                if (!appInfo) {
-                    setTimeout(() => { window.location.href = config.tgDeep; }, 500);
-                }
-            });
-
-            // إعادة الحالة عند العودة للصفحة
-            window.addEventListener('focus', () => {
+                // فتح الويب كاحتياط
                 setTimeout(() => {
-                    loader.style.display = 'none';
-                    btn.style.display = 'block';
-                    if (!appInfo) msgBox.style.display = 'none';
-                }, 1000);
-            });
+                    if (!appOpened) window.open(REAL_LINKS.telegramWeb, '_blank');
+                }, 1500);
 
+                // إعادة الزر تلقائياً بعد 10 ثوانٍ
+                setTimeout(resetButtonState, 10000);
+            };
+
+            const forceOpenExternal = () => {
+                const url = REAL_LINKS.customDomain;
+                const ua = navigator.userAgent;
+
+                if (/android/i.test(ua)) {
+                    window.location.href = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.chrome;end`;
+                } else {
+                    window.location.href = url;
+                }
+                
+                // إظهار اللودر مؤقتاً عند محاولة الخروج
+                elements.mainActionBtn.style.display = 'none';
+                elements.loader.style.display = 'block';
+                setTimeout(resetButtonState, 10000);
+            };
+
+            const setupEventListeners = () => {
+                elements.mainActionBtn.addEventListener('click', () => {
+                    if (detectBrowser().isEmbedded) {
+                        elements.successMessage.style.display = 'block';
+                        forceOpenExternal();
+                    } else {
+                        openTelegramDirectly();
+                    }
+                });
+
+                // استعادة الزر فوراً عند العودة للصفحة (Focus)
+                window.addEventListener('focus', resetButtonState);
+
+                window.addEventListener('blur', () => {
+                    if (!detectBrowser().isEmbedded) appOpened = true;
+                });
+            };
+
+            const init = () => {
+                const info = detectBrowser();
+                if (info.isEmbedded) {
+                    elements.browserWarning.innerHTML = `<h3>متصفح مقيد</h3><p>لضمان فتح القناة بشكل صحيح، يرجى الضغط للفتح في المتصفح الخارجي.</p>`;
+                    elements.browserWarning.style.display = 'block';
+                    elements.mainActionBtn.textContent = "فتح في المتصفح الخارجي";
+                }
+                setupEventListeners();
+            };
+
+            init();
         })();
     </script>
 </body>

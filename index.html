@@ -24,7 +24,7 @@
         html, body {
             width: 100%;
             height: 100%;
-            overflow-x: hidden; /* منع التمرير الأفقي */
+            overflow-x: hidden;
         }
 
         body {
@@ -41,7 +41,6 @@
             position: relative;
         }
 
-        /* طبقة خلفية ثابتة */
         .container-wrapper {
             display: flex;
             justify-content: center;
@@ -53,7 +52,7 @@
 
         .container {
             width: 100%;
-            max-width: min(90vw, 500px); /* سيحد من العرض الأقصى */
+            max-width: min(90vw, 500px);
             padding: clamp(1.5rem, 4vw, 2.5rem);
             background: rgba(26, 10, 10, 0.95);
             border-radius: 12px;
@@ -63,15 +62,6 @@
             overflow: hidden;
             animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             margin: auto;
-        }
-
-        /* التأكد من بقاء الحاوية في المركز حتى مع التكبير */
-        @media (max-height: 600px) {
-            .container-wrapper {
-                align-items: flex-start;
-                padding-top: 1rem;
-                overflow-y: auto;
-            }
         }
 
         @keyframes fadeIn { 
@@ -283,6 +273,20 @@
             opacity: 0.9;
         }
 
+        /* اسم التطبيق الجديد - مع خلفية شفافة بلون التطبيق */
+        .app-name {
+            font-weight: bold;
+            margin: 0 3px;
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            border: 2px solid;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
         .fade-in { 
             animation: fadeInUp 0.8s ease forwards; 
             opacity: 0; 
@@ -326,12 +330,6 @@
             opacity: 0;
         }
         
-        .app-name { 
-            font-weight: bold; 
-            margin: 0 3px;
-            display: inline;
-        }
-        
         .copy-instructions {
             background: linear-gradient(135deg, #d4af37 0%, #a6892c 100%);
             color: #1a0a0a;
@@ -343,9 +341,6 @@
             display: none;
         }
 
-        /* ========== استعلامات الوسائط للتحكم في التمرير ========== */
-        
-        /* للأجهزة ذات الشاشات القصيرة */
         @media (max-height: 700px) {
             .container {
                 max-height: 90vh;
@@ -363,7 +358,6 @@
             }
         }
         
-        /* للهواتف العمودية (Portrait) */
         @media (max-width: 480px) and (orientation: portrait) {
             .container-wrapper {
                 padding: 0.5rem;
@@ -376,63 +370,6 @@
             .stats-grid {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 0.5rem;
-            }
-        }
-        
-        /* للهواتف الأفقية (Landscape) */
-        @media (max-height: 500px) and (orientation: landscape) {
-            .container-wrapper {
-                padding: 0.3rem;
-            }
-            
-            .container {
-                padding: 1rem;
-                max-width: 95vw;
-            }
-            
-            .logo {
-                width: 3.5rem;
-                height: 3.5rem;
-                margin-bottom: 0.8rem;
-            }
-            
-            h1 {
-                font-size: 1.2rem;
-                margin-bottom: 0.4rem;
-            }
-            
-            .description {
-                font-size: 0.8rem;
-                margin-bottom: 0.8rem;
-            }
-            
-            .domain-display {
-                margin: 0.8rem 0;
-                padding: 0.6rem;
-                font-size: 0.85rem;
-            }
-            
-            .stats-grid {
-                margin: 0.8rem 0;
-                gap: 0.4rem;
-            }
-            
-            .stat-card {
-                padding: 0.6rem 0.4rem;
-                min-height: 60px;
-            }
-            
-            .join-btn {
-                margin: 0.8rem 0 0.6rem;
-                padding: 0.7rem;
-                font-size: 0.9rem;
-            }
-        }
-        
-        /* للتكبير (Zoom) */
-        @media (min-resolution: 192dpi) {
-            .container {
-                border-width: 2px;
             }
         }
     </style>
@@ -475,35 +412,70 @@
                 customDomain: 'https://telegram.rwadcenima.com'
             };
 
-            // ألوان التطبيقات المضمنة - فقط ألوان النص
+            // ألوان التطبيقات المضمنة - بلون التطبيق الأساسي
             const APP_COLORS = {
-                'Facebook': '#1877F2',
-                'Instagram': '#E4405F',
-                'Twitter': '#1DA1F2',
-                'LinkedIn': '#0A66C2',
-                'Snapchat': '#FFFC00',
-                'متصفح ويب': '#d4af37',
-                'default': '#d4af37'
+                'Facebook': '#1877F2',        // أزرق فيسبوك
+                'Instagram': '#E4405F',       // وردي انستجرام
+                'Twitter': '#1DA1F2',         // أزرق تويتر
+                'LinkedIn': '#0A66C2',        // أزرق لينكدان
+                'Snapchat': '#FFFC00',        // أصفر سناب شات
+                'متصفح ويب': '#d4af37',       // ذهبي للمتصفحات الأخرى
+                'default': '#d4af37'          // ذهبي افتراضي
             };
 
+            // خلفيات شفافة مع تدرج لوني خفيف - بلون التطبيق مع شفافية أعلى
             const APP_BACKGROUNDS = {
-                'Facebook': 'rgba(24, 119, 242, 0.05)',
-                'Instagram': 'rgba(228, 64, 95, 0.05)',
-                'Twitter': 'rgba(29, 161, 242, 0.05)',
-                'LinkedIn': 'rgba(10, 102, 194, 0.05)',
-                'Snapchat': 'rgba(255, 252, 0, 0.05)',
-                'متصفح ويب': 'rgba(212, 175, 55, 0.05)',
-                'default': 'rgba(212, 175, 55, 0.05)'
+                'Facebook': 'rgba(24, 119, 242, 0.08)',
+                'Instagram': 'rgba(228, 64, 95, 0.08)',
+                'Twitter': 'rgba(29, 161, 242, 0.08)',
+                'LinkedIn': 'rgba(10, 102, 194, 0.08)',
+                'Snapchat': 'rgba(255, 252, 0, 0.08)',
+                'متصفح ويب': 'rgba(212, 175, 55, 0.08)',
+                'default': 'rgba(212, 175, 55, 0.08)'
             };
 
+            // ألوان الحدود الشفافة - بلون التطبيق مع شفافية أقل
             const APP_BORDERS = {
-                'Facebook': 'rgba(24, 119, 242, 0.2)',
-                'Instagram': 'rgba(228, 64, 95, 0.2)',
-                'Twitter': 'rgba(29, 161, 242, 0.2)',
-                'LinkedIn': 'rgba(10, 102, 194, 0.2)',
-                'Snapchat': 'rgba(255, 252, 0, 0.2)',
-                'متصفح ويب': 'rgba(212, 175, 55, 0.2)',
-                'default': 'rgba(212, 175, 55, 0.2)'
+                'Facebook': 'rgba(24, 119, 242, 0.25)',
+                'Instagram': 'rgba(228, 64, 95, 0.25)',
+                'Twitter': 'rgba(29, 161, 242, 0.25)',
+                'LinkedIn': 'rgba(10, 102, 194, 0.25)',
+                'Snapchat': 'rgba(255, 252, 0, 0.25)',
+                'متصفح ويب': 'rgba(212, 175, 55, 0.25)',
+                'default': 'rgba(212, 175, 55, 0.25)'
+            };
+
+            // خلفية اسم التطبيق - بلون التطبيق مع شفافية متوسطة
+            const APP_NAME_BACKGROUNDS = {
+                'Facebook': 'rgba(24, 119, 242, 0.15)',
+                'Instagram': 'rgba(228, 64, 95, 0.15)',
+                'Twitter': 'rgba(29, 161, 242, 0.15)',
+                'LinkedIn': 'rgba(10, 102, 194, 0.15)',
+                'Snapchat': 'rgba(255, 252, 0, 0.15)',
+                'متصفح ويب': 'rgba(212, 175, 55, 0.15)',
+                'default': 'rgba(212, 175, 55, 0.15)'
+            };
+
+            // ألوان الحدود لاسم التطبيق - بلون التطبيق مع شفافية أقل
+            const APP_NAME_BORDERS = {
+                'Facebook': 'rgba(24, 119, 242, 0.5)',
+                'Instagram': 'rgba(228, 64, 95, 0.5)',
+                'Twitter': 'rgba(29, 161, 242, 0.5)',
+                'LinkedIn': 'rgba(10, 102, 194, 0.5)',
+                'Snapchat': 'rgba(255, 252, 0, 0.5)',
+                'متصفح ويب': 'rgba(212, 175, 55, 0.5)',
+                'default': 'rgba(212, 175, 55, 0.5)'
+            };
+
+            // لون نص اسم التطبيق - أبيض أو فاتح للقراءة
+            const APP_NAME_TEXT_COLORS = {
+                'Facebook': '#ffffff',
+                'Instagram': '#ffffff',
+                'Twitter': '#ffffff',
+                'LinkedIn': '#ffffff',
+                'Snapchat': '#000000',  // نص أسود على خلفية صفراء
+                'متصفح ويب': '#ffffff',
+                'default': '#ffffff'
             };
 
             const elements = {
@@ -539,21 +511,37 @@
                 return { isEmbedded, appName, ua };
             };
 
+            // دالة لتطبيق أنماط التطبيق على العنصر (محسّنة)
             const applyAppStyles = (element, appName) => {
                 const color = APP_COLORS[appName] || APP_COLORS.default;
                 const background = APP_BACKGROUNDS[appName] || APP_BACKGROUNDS.default;
                 const border = APP_BORDERS[appName] || APP_BORDERS.default;
+                const nameBackground = APP_NAME_BACKGROUNDS[appName] || APP_NAME_BACKGROUNDS.default;
+                const nameBorder = APP_NAME_BORDERS[appName] || APP_NAME_BORDERS.default;
+                const nameTextColor = APP_NAME_TEXT_COLORS[appName] || APP_NAME_TEXT_COLORS.default;
                 
+                // تطبيق الأنماط على العنصر الرئيسي
                 element.style.background = background;
                 element.style.borderColor = border;
                 element.style.color = 'white';
                 
+                // تحديث اسم التطبيق بمظهر مخصص
                 const appNameSpan = element.querySelector('.app-name');
                 if (appNameSpan) {
-                    appNameSpan.style.color = color;
+                    appNameSpan.style.backgroundColor = nameBackground;
+                    appNameSpan.style.borderColor = nameBorder;
+                    appNameSpan.style.color = nameTextColor;
                     appNameSpan.style.fontWeight = '700';
-                    appNameSpan.style.background = 'none';
-                    appNameSpan.style.padding = '0';
+                    appNameSpan.style.padding = '4px 12px';
+                    appNameSpan.style.borderRadius = '8px';
+                    appNameSpan.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+                    
+                    // نص سناب شات أسود للوضوح
+                    if (appName === 'Snapchat') {
+                        appNameSpan.style.textShadow = 'none';
+                    } else {
+                        appNameSpan.style.textShadow = '0 1px 2px rgba(0,0,0,0.3)';
+                    }
                 }
             };
 
@@ -624,11 +612,6 @@
                 window.addEventListener('focus', resetButtonState);
                 window.addEventListener('blur', () => {
                     if (!detectBrowser().isEmbedded) appOpened = true;
-                });
-                
-                // تكيف مع تغيير حجم النافذة
-                window.addEventListener('resize', function() {
-                    // إعادة حساب أي عناصر إذا لزم الأمر
                 });
             };
 

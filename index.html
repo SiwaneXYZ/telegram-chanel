@@ -5,7 +5,7 @@
     <link rel="icon" type="image/jpeg" src="logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
- <title>رُوّاد السينما ᵀᴿ</title>
+    <title>رُوّاد السينما ᵀᴿ</title>
     <style>
         :root {
             --primary: #960000;
@@ -172,17 +172,32 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .browser-warning {
-            background: linear-gradient(135deg, #d4af37 0%, #f1d382 100%);
-            color: #1a0a0a;
-            padding: 15px;
-            border-radius: 8px;
+            color: white;
+            padding: 18px 20px;
+            border-radius: 12px;
             margin-bottom: 25px;
-            border: 2px solid #a6892c;
             text-align: center;
             animation: fadeIn 0.5s ease;
+            backdrop-filter: blur(15px);
+            border: 2px solid;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
 
-        .browser-warning h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #8b0000; }
+        .browser-warning h3 { 
+            margin: 0 0 10px 0; 
+            font-size: 1.2rem; 
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .browser-warning p { 
+            margin: 0; 
+            font-size: 1rem;
+            line-height: 1.5;
+        }
 
         .fade-in { animation: fadeInUp 0.8s ease forwards; opacity: 0; transform: translateY(20px); }
         .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; } .delay-4 { animation-delay: 0.4s; }
@@ -205,16 +220,32 @@
         }
         
         .success-message {
-            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             color: white;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 18px 20px;
+            border-radius: 12px;
             margin: 15px 0;
             display: none;
             animation: fadeIn 0.5s ease;
+            backdrop-filter: blur(15px);
+            border: 2px solid;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            font-weight: 600;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
         }
         
-        .app-name { font-weight: bold; color: #8b0000; padding: 2px 6px; background: rgba(139, 0, 0, 0.1); border-radius: 4px; }
+        .success-message.fade-out {
+            opacity: 0;
+        }
+        
+        .app-name { 
+            font-weight: bold; 
+            padding: 4px 12px; 
+            border-radius: 6px; 
+            margin: 0 5px;
+            display: inline-block;
+        }
         
         .copy-instructions {
             background: linear-gradient(135deg, #d4af37 0%, #a6892c 100%);
@@ -264,6 +295,40 @@
                 customDomain: 'https://telegram.rwadcenima.com'
             };
 
+            // ألوان التطبيقات المضمنة
+            const APP_COLORS = {
+                'Facebook': {
+                    primary: '#1877F2',
+                    secondary: 'rgba(24, 119, 242, 0.15)',
+                    gradient: 'linear-gradient(135deg, #1877F2 0%, #0D5FDB 100%)'
+                },
+                'Instagram': {
+                    primary: '#E4405F',
+                    secondary: 'rgba(228, 64, 95, 0.15)',
+                    gradient: 'linear-gradient(45deg, #833AB4 0%, #FD1D1D 50%, #F77737 100%)'
+                },
+                'Twitter': {
+                    primary: '#1DA1F2',
+                    secondary: 'rgba(29, 161, 242, 0.15)',
+                    gradient: 'linear-gradient(135deg, #1DA1F2 0%, #0D8BD9 100%)'
+                },
+                'LinkedIn': {
+                    primary: '#0A66C2',
+                    secondary: 'rgba(10, 102, 194, 0.15)',
+                    gradient: 'linear-gradient(135deg, #0A66C2 0%, #004182 100%)'
+                },
+                'Snapchat': {
+                    primary: '#FFFC00',
+                    secondary: 'rgba(255, 252, 0, 0.15)',
+                    gradient: 'linear-gradient(135deg, #FFFC00 0%, #FFD700 100%)'
+                },
+                'default': {
+                    primary: '#d4af37',
+                    secondary: 'rgba(212, 175, 55, 0.15)',
+                    gradient: 'linear-gradient(135deg, #d4af37 0%, #a6892c 100%)'
+                }
+            };
+
             const elements = {
                 mainActionBtn: document.getElementById('mainActionBtn'),
                 loader: document.getElementById('loader'),
@@ -273,11 +338,45 @@
             };
 
             let appOpened = false;
+            let autoHideTimer = null;
 
+            // دالة لاكتشاف التطبيق المضمن بدقة
             const detectBrowser = () => {
                 const ua = navigator.userAgent || navigator.vendor || window.opera;
+                let appName = 'متصفح مضمن';
+                
+                if (/FBAN|FBAV/i.test(ua)) {
+                    appName = 'Facebook';
+                } else if (/Instagram/i.test(ua)) {
+                    appName = 'Instagram';
+                } else if (/Twitter/i.test(ua)) {
+                    appName = 'Twitter';
+                } else if (/LinkedIn/i.test(ua)) {
+                    appName = 'LinkedIn';
+                } else if (/Snapchat/i.test(ua)) {
+                    appName = 'Snapchat';
+                } else if (/wv/i.test(ua)) {
+                    appName = 'متصفح ويب';
+                }
+                
                 const isEmbedded = /FBAN|FBAV|Instagram|Twitter|LinkedIn|Snapchat|wv/i.test(ua);
-                return { isEmbedded, ua };
+                return { isEmbedded, appName, ua };
+            };
+
+            // دالة لتطبيق أنماط التطبيق على العنصر
+            const applyAppStyles = (element, appName) => {
+                const colors = APP_COLORS[appName] || APP_COLORS.default;
+                
+                element.style.background = colors.secondary;
+                element.style.borderColor = colors.primary;
+                element.style.color = colors.primary;
+                
+                // تحديث نص اسم التطبيق بلون التطبيق
+                const appNameSpan = element.querySelector('.app-name');
+                if (appNameSpan) {
+                    appNameSpan.style.background = colors.primary;
+                    appNameSpan.style.color = 'white';
+                }
             };
 
             // دالة استعادة حالة الزر الأصلية
@@ -285,6 +384,12 @@
                 elements.mainActionBtn.style.display = 'block';
                 elements.loader.style.display = 'none';
                 appOpened = false;
+                
+                // إلغاء المؤقت السابق إذا كان موجوداً
+                if (autoHideTimer) {
+                    clearTimeout(autoHideTimer);
+                    autoHideTimer = null;
+                }
             };
 
             const openTelegramDirectly = () => {
@@ -305,6 +410,23 @@
             const forceOpenExternal = () => {
                 const url = REAL_LINKS.customDomain;
                 const ua = navigator.userAgent;
+                const browserInfo = detectBrowser();
+
+                // تطبيق أنماط التطبيق على رسالة النجاح
+                applyAppStyles(elements.successMessage, browserInfo.appName);
+                
+                // تحديث نص الرسالة مع اسم التطبيق
+                elements.successMessage.innerHTML = `جاري فتح المتصفح الخارجي... <span class="app-name">${browserInfo.appName}</span>`;
+                elements.successMessage.style.display = 'block';
+
+                // إخفاء الرسالة بعد 10 ثواني مع تأثير التلاشي
+                setTimeout(() => {
+                    elements.successMessage.classList.add('fade-out');
+                    setTimeout(() => {
+                        elements.successMessage.style.display = 'none';
+                        elements.successMessage.classList.remove('fade-out');
+                    }, 500);
+                }, 10000);
 
                 if (/android/i.test(ua)) {
                     window.location.href = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.chrome;end`;
@@ -315,13 +437,15 @@
                 // إظهار اللودر مؤقتاً عند محاولة الخروج
                 elements.mainActionBtn.style.display = 'none';
                 elements.loader.style.display = 'block';
+                
+                // إعادة الزر بعد 10 ثواني
                 setTimeout(resetButtonState, 10000);
             };
 
             const setupEventListeners = () => {
                 elements.mainActionBtn.addEventListener('click', () => {
-                    if (detectBrowser().isEmbedded) {
-                        elements.successMessage.style.display = 'block';
+                    const browserInfo = detectBrowser();
+                    if (browserInfo.isEmbedded) {
                         forceOpenExternal();
                     } else {
                         openTelegramDirectly();
@@ -337,11 +461,21 @@
             };
 
             const init = () => {
-                const info = detectBrowser();
-                if (info.isEmbedded) {
-                    elements.browserWarning.innerHTML = `<h3>متصفح مقيد</h3><p>لضمان فتح القناة بشكل صحيح، يرجى الضغط للفتح في المتصفح الخارجي.</p>`;
+                const browserInfo = detectBrowser();
+                if (browserInfo.isEmbedded) {
+                    // تطبيق أنماط التطبيق على رسالة التحذير
+                    applyAppStyles(elements.browserWarning, browserInfo.appName);
+                    
+                    // تحديث نص التحذير مع اسم التطبيق
+                    elements.browserWarning.innerHTML = `
+                        <h3 style="background: ${APP_COLORS[browserInfo.appName] ? APP_COLORS[browserInfo.appName].primary : APP_COLORS.default.primary}">
+                            متصفح <span class="app-name">${browserInfo.appName}</span> المقيد
+                        </h3>
+                        <p>لضمان فتح القناة بشكل صحيح، يرجى الضغط للفتح في المتصفح الخارجي.</p>
+                    `;
+                    
                     elements.browserWarning.style.display = 'block';
-                    elements.mainActionBtn.textContent = "فتح في المتصفح الخارجي";
+                    elements.mainActionBtn.textContent = `فتح في المتصفح الخارجي (${browserInfo.appName})`;
                 }
                 setupEventListeners();
             };

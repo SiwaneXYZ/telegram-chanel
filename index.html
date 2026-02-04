@@ -2,7 +2,7 @@
 <html dir="rtl" lang="ar">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/jpeg" src="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>رُوّاد السينما ᵀᴿ</title>
@@ -15,7 +15,17 @@
             --text-secondary: #e0c0c0;
         }
 
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden; /* منع التمرير الأفقي */
+        }
 
         body {
             font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -26,14 +36,25 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px;
+            padding: clamp(0.5rem, 2vw, 1.25rem);
             line-height: 1.6;
+            position: relative;
+        }
+
+        /* طبقة خلفية ثابتة */
+        .container-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 100%;
+            padding: clamp(0.5rem, 3vw, 1.5rem);
         }
 
         .container {
-            max-width: 480px;
             width: 100%;
-            padding: 40px 30px;
+            max-width: min(90vw, 500px); /* سيحد من العرض الأقصى */
+            padding: clamp(1.5rem, 4vw, 2.5rem);
             background: rgba(26, 10, 10, 0.95);
             border-radius: 12px;
             border: 1px solid rgba(212, 175, 55, 0.2);
@@ -41,15 +62,28 @@
             position: relative;
             overflow: hidden;
             animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: auto;
         }
 
-        @keyframes fadeIn { from { opacity:0; transform:translateY(30px) scale(0.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+        /* التأكد من بقاء الحاوية في المركز حتى مع التكبير */
+        @media (max-height: 600px) {
+            .container-wrapper {
+                align-items: flex-start;
+                padding-top: 1rem;
+                overflow-y: auto;
+            }
+        }
+
+        @keyframes fadeIn { 
+            from { opacity:0; transform:translateY(30px) scale(0.95); } 
+            to { opacity:1; transform:translateY(0) scale(1); } 
+        }
 
         /* --- تأثير الموجات النابضة (Pulse Wave) --- */
         .logo {
-            width: 110px;
-            height: 110px;
-            margin: 0 auto 25px;
+            width: clamp(4.5rem, 18vw, 7rem);
+            height: clamp(4.5rem, 18vw, 7rem);
+            margin: 0 auto clamp(1rem, 3vw, 1.5rem);
             background: rgba(0, 0, 0, 0.3);
             border-radius: 50%;
             display: flex;
@@ -98,62 +132,98 @@
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 15px;
+            font-size: clamp(1.4rem, 4.5vw, 2rem);
+            margin-bottom: clamp(0.6rem, 1.8vw, 0.9rem);
             background: linear-gradient(45deg, #fff 30%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 800;
+            line-height: 1.3;
         }
 
-        .description { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 30px; }
+        .description { 
+            color: var(--text-secondary); 
+            font-size: clamp(0.85rem, 2.2vw, 1.05rem);
+            margin-bottom: clamp(1.2rem, 3.5vw, 1.7rem);
+            line-height: 1.5;
+        }
 
         .domain-display {
             background: rgba(212, 175, 55, 0.05);
-            padding: 16px;
+            padding: clamp(0.7rem, 1.8vw, 0.95rem);
             border-radius: 6px;
-            margin: 30px 0;
+            margin: clamp(1.2rem, 3.5vw, 1.7rem) 0;
             font-family: 'Courier New', monospace;
-            font-size: 1.2rem;
+            font-size: clamp(0.95rem, 2.8vw, 1.15rem);
             color: var(--accent);
             direction: ltr;
             border: 1px solid rgba(212, 175, 55, 0.2);
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
+            word-break: break-all;
+            overflow-wrap: break-word;
         }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 35px 0; }
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: clamp(0.6rem, 2.5vw, 1.1rem);
+            margin: clamp(1.2rem, 4vw, 2rem) 0;
+        }
+        
         .stat-card {
             background: rgba(255, 255, 255, 0.03);
-            padding: 20px 15px;
+            padding: clamp(0.8rem, 2.2vw, 1.1rem) clamp(0.6rem, 1.8vw, 0.85rem);
             border-radius: 8px;
             border: 1px solid rgba(212, 175, 55, 0.1);
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 80px;
         }
-        .stat-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .stat-number { font-size: 1.8rem; font-weight: 800; color: var(--accent); display: block; margin-bottom: 8px; }
-        .stat-label { font-size: 0.9rem; color: var(--text-secondary); }
+        
+        .stat-card:hover { 
+            transform: translateY(-5px); 
+            border-color: var(--accent); 
+        }
+        
+        .stat-number { 
+            font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+            font-weight: 800; 
+            color: var(--accent); 
+            display: block; 
+            margin-bottom: clamp(0.2rem, 0.8vw, 0.4rem);
+        }
+        
+        .stat-label { 
+            font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+            color: var(--text-secondary); 
+        }
 
         .join-btn {
             display: block;
             width: 100%;
-            padding: 22px;
+            padding: clamp(0.9rem, 2.8vw, 1.3rem);
             background: linear-gradient(135deg, var(--primary) 0%, #600000 100%);
             color: white;
             text-decoration: none;
             border-radius: 8px;
-            font-size: 1.4rem;
+            font-size: clamp(1rem, 2.8vw, 1.3rem);
             font-weight: 700;
             border: 1px solid var(--accent);
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            margin: 35px 0 25px;
+            margin: clamp(1.2rem, 4vw, 2rem) 0 clamp(0.8rem, 2.5vw, 1.5rem);
             box-shadow: 0 12px 35px rgba(150, 0, 0, 0.4);
         }
 
-        .join-btn:hover { transform: translateY(-6px); box-shadow: 0 20px 45px rgba(212, 175, 55, 0.2); }
+        .join-btn:hover { 
+            transform: translateY(-6px); 
+            box-shadow: 0 20px 45px rgba(212, 175, 55, 0.2); 
+        }
         
         .join-btn::after {
             content: '';
@@ -166,29 +236,43 @@
             transform: rotate(30deg);
             transition: transform 0.6s;
         }
-        .join-btn:hover::after { transform: rotate(30deg) translate(15%, 15%); }
+        
+        .join-btn:hover::after { 
+            transform: rotate(30deg) translate(15%, 15%); 
+        }
 
-        .loader { display: none; width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 30px auto; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader { 
+            display: none; 
+            width: 50px; 
+            height: 50px; 
+            border: 4px solid rgba(255,255,255,0.1); 
+            border-top-color: var(--accent); 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+            margin: 30px auto; 
+        }
+        
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
 
-        /* تحسينات رسائل المتصفح - بحجم أصغر وأنظف */
         .browser-warning {
             color: white;
-            padding: 12px 15px;
+            padding: clamp(0.7rem, 1.8vw, 0.95rem);
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: clamp(0.8rem, 2.5vw, 1.2rem);
             text-align: center;
             animation: fadeIn 0.5s ease;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
-            font-size: 0.95rem;
+            font-size: clamp(0.8rem, 2.2vw, 0.9rem);
         }
 
         .browser-warning h3 { 
-            margin: 0 0 8px 0; 
-            font-size: 1rem; 
+            margin: 0 0 clamp(0.4rem, 1.2vw, 0.6rem) 0;
+            font-size: clamp(0.85rem, 2.2vw, 0.95rem);
             font-weight: 600;
             color: inherit;
         }
@@ -199,32 +283,33 @@
             opacity: 0.9;
         }
 
-        .fade-in { animation: fadeInUp 0.8s ease forwards; opacity: 0; transform: translateY(20px); }
-        .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; } .delay-4 { animation-delay: 0.4s; }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        
-        .info-note { color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px; line-height: 1.5; }
-        
-        .external-btn {
-            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
-            color: white;
-            border: none;
-            padding: 22px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin: 35px 0 25px;
-            width: 100%;
-            transition: all 0.3s ease;
+        .fade-in { 
+            animation: fadeInUp 0.8s ease forwards; 
+            opacity: 0; 
+            transform: translateY(20px); 
         }
         
-        /* رسالة النجاح - بحجم أصغر وأنظف */
+        .delay-1 { animation-delay: 0.1s; } 
+        .delay-2 { animation-delay: 0.2s; } 
+        .delay-3 { animation-delay: 0.3s; } 
+        .delay-4 { animation-delay: 0.4s; }
+        
+        @keyframes fadeInUp { 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        .info-note { 
+            color: var(--text-secondary); 
+            font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+            margin-top: clamp(0.6rem, 1.8vw, 0.9rem);
+            line-height: 1.5; 
+        }
+        
         .success-message {
             color: white;
-            padding: 12px 15px;
+            padding: clamp(0.7rem, 1.8vw, 0.95rem);
             border-radius: 8px;
-            margin: 12px 0;
+            margin: clamp(0.6rem, 1.8vw, 0.9rem) 0;
             display: none;
             animation: fadeIn 0.5s ease;
             backdrop-filter: blur(10px);
@@ -232,7 +317,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             font-weight: 500;
             text-align: center;
-            font-size: 0.95rem;
+            font-size: clamp(0.8rem, 2.2vw, 0.9rem);
             opacity: 1;
             transition: opacity 0.5s ease;
         }
@@ -241,7 +326,6 @@
             opacity: 0;
         }
         
-        /* اسم التطبيق - نص فقط بدون خلفية */
         .app-name { 
             font-weight: bold; 
             margin: 0 3px;
@@ -258,34 +342,129 @@
             text-align: center;
             display: none;
         }
+
+        /* ========== استعلامات الوسائط للتحكم في التمرير ========== */
+        
+        /* للأجهزة ذات الشاشات القصيرة */
+        @media (max-height: 700px) {
+            .container {
+                max-height: 90vh;
+                overflow-y: auto;
+                margin: 1rem auto;
+            }
+            
+            .container::-webkit-scrollbar {
+                width: 5px;
+            }
+            
+            .container::-webkit-scrollbar-thumb {
+                background: var(--accent);
+                border-radius: 10px;
+            }
+        }
+        
+        /* للهواتف العمودية (Portrait) */
+        @media (max-width: 480px) and (orientation: portrait) {
+            .container-wrapper {
+                padding: 0.5rem;
+            }
+            
+            .container {
+                padding: 1.2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+        }
+        
+        /* للهواتف الأفقية (Landscape) */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .container-wrapper {
+                padding: 0.3rem;
+            }
+            
+            .container {
+                padding: 1rem;
+                max-width: 95vw;
+            }
+            
+            .logo {
+                width: 3.5rem;
+                height: 3.5rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            h1 {
+                font-size: 1.2rem;
+                margin-bottom: 0.4rem;
+            }
+            
+            .description {
+                font-size: 0.8rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .domain-display {
+                margin: 0.8rem 0;
+                padding: 0.6rem;
+                font-size: 0.85rem;
+            }
+            
+            .stats-grid {
+                margin: 0.8rem 0;
+                gap: 0.4rem;
+            }
+            
+            .stat-card {
+                padding: 0.6rem 0.4rem;
+                min-height: 60px;
+            }
+            
+            .join-btn {
+                margin: 0.8rem 0 0.6rem;
+                padding: 0.7rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* للتكبير (Zoom) */
+        @media (min-resolution: 192dpi) {
+            .container {
+                border-width: 2px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="browserWarning" class="browser-warning" style="display: none;"></div>
-        
-        <div class="logo fade-in">
-            <img src="logo.jpg" alt="Logo">
+    <div class="container-wrapper">
+        <div class="container">
+            <div id="browserWarning" class="browser-warning" style="display: none;"></div>
+            
+            <div class="logo fade-in">
+                <img src="logo.jpg" alt="Logo">
+            </div>
+            
+            <h1 class="fade-in delay-1">رُوّاد السينما ᵀᴿ</h1>
+            <p class="description fade-in delay-2">أحدث الأفلام والمسلسلات والمراجعات الحصرية</p>
+            
+            <div class="domain-display fade-in delay-2">telegram.rwadcenima.com</div>
+            
+            <div class="stats-grid fade-in delay-3">
+                <div class="stat-card"><span class="stat-number">390</span><span class="stat-label">مشترك</span></div>
+                <div class="stat-card"><span class="stat-number">4</span><span class="stat-label">مشرف</span></div>
+                <div class="stat-card"><span class="stat-number">24/7</span><span class="stat-label">محتوى</span></div>
+            </div>
+            
+            <button class="join-btn fade-in delay-4" id="mainActionBtn">انضم إلى القناة الآن</button>
+            <div class="loader" id="loader"></div>
+            
+            <div class="success-message" id="successMessage">جاري فتح المتصفح الخارجي...</div>
+            <div class="copy-instructions" id="copyInstructions"></div>
+            
+            <div class="info-note fade-in delay-4">سيتم توجيهك إلى قناة Telegram الخاصة بنا.</div>
         </div>
-        
-        <h1 class="fade-in delay-1">رُوّاد السينما ᵀᴿ</h1>
-        <p class="description fade-in delay-2">أحدث الأفلام والمسلسلات والمراجعات الحصرية</p>
-        
-        <div class="domain-display fade-in delay-2">telegram.rwadcenima.com</div>
-        
-        <div class="stats-grid fade-in delay-3">
-            <div class="stat-card"><span class="stat-number">390</span><span class="stat-label">مشترك</span></div>
-            <div class="stat-card"><span class="stat-number">4</span><span class="stat-label">مشرف</span></div>
-            <div class="stat-card"><span class="stat-number">24/7</span><span class="stat-label">محتوى</span></div>
-        </div>
-        
-        <button class="join-btn fade-in delay-4" id="mainActionBtn">انضم إلى القناة الآن</button>
-        <div class="loader" id="loader"></div>
-        
-        <div class="success-message" id="successMessage">جاري فتح المتصفح الخارجي...</div>
-        <div class="copy-instructions" id="copyInstructions"></div>
-        
-        <div class="info-note fade-in delay-4">سيتم توجيهك إلى قناة Telegram الخاصة بنا.</div>
     </div>
 
     <script>
@@ -298,16 +477,15 @@
 
             // ألوان التطبيقات المضمنة - فقط ألوان النص
             const APP_COLORS = {
-                'Facebook': '#1877F2',        // أزرق فيسبوك
-                'Instagram': '#E4405F',       // وردي انستجرام
-                'Twitter': '#1DA1F2',         // أزرق تويتر
-                'LinkedIn': '#0A66C2',        // أزرق لينكدان
-                'Snapchat': '#FFFC00',        // أصفر سناب شات
-                'متصفح ويب': '#d4af37',       // ذهبي للمتصفحات الأخرى
-                'default': '#d4af37'          // ذهبي افتراضي
+                'Facebook': '#1877F2',
+                'Instagram': '#E4405F',
+                'Twitter': '#1DA1F2',
+                'LinkedIn': '#0A66C2',
+                'Snapchat': '#FFFC00',
+                'متصفح ويب': '#d4af37',
+                'default': '#d4af37'
             };
 
-            // خلفيات شفافة مع تدرج لوني خفيف
             const APP_BACKGROUNDS = {
                 'Facebook': 'rgba(24, 119, 242, 0.05)',
                 'Instagram': 'rgba(228, 64, 95, 0.05)',
@@ -318,7 +496,6 @@
                 'default': 'rgba(212, 175, 55, 0.05)'
             };
 
-            // ألوان الحدود الشفافة
             const APP_BORDERS = {
                 'Facebook': 'rgba(24, 119, 242, 0.2)',
                 'Instagram': 'rgba(228, 64, 95, 0.2)',
@@ -340,7 +517,6 @@
             let appOpened = false;
             let autoHideTimer = null;
 
-            // دالة لاكتشاف التطبيق المضمن بدقة
             const detectBrowser = () => {
                 const ua = navigator.userAgent || navigator.vendor || window.opera;
                 let appName = 'متصفح ويب';
@@ -363,34 +539,29 @@
                 return { isEmbedded, appName, ua };
             };
 
-            // دالة لتطبيق أنماط التطبيق على العنصر (بسيطة وأنيقة)
             const applyAppStyles = (element, appName) => {
                 const color = APP_COLORS[appName] || APP_COLORS.default;
                 const background = APP_BACKGROUNDS[appName] || APP_BACKGROUNDS.default;
                 const border = APP_BORDERS[appName] || APP_BORDERS.default;
                 
-                // تطبيق الأنماط
                 element.style.background = background;
                 element.style.borderColor = border;
-                element.style.color = 'white'; // النص الأبيض دائمًا
+                element.style.color = 'white';
                 
-                // تحديث اسم التطبيق بلونه فقط (بدون خلفية)
                 const appNameSpan = element.querySelector('.app-name');
                 if (appNameSpan) {
                     appNameSpan.style.color = color;
                     appNameSpan.style.fontWeight = '700';
-                    appNameSpan.style.background = 'none'; // بدون خلفية
-                    appNameSpan.style.padding = '0'; // بدون padding
+                    appNameSpan.style.background = 'none';
+                    appNameSpan.style.padding = '0';
                 }
             };
 
-            // دالة استعادة حالة الزر الأصلية
             const resetButtonState = () => {
                 elements.mainActionBtn.style.display = 'block';
                 elements.loader.style.display = 'none';
                 appOpened = false;
                 
-                // إلغاء المؤقت السابق إذا كان موجوداً
                 if (autoHideTimer) {
                     clearTimeout(autoHideTimer);
                     autoHideTimer = null;
@@ -403,12 +574,10 @@
 
                 window.location.href = REAL_LINKS.telegramDeep;
                 
-                // فتح الويب كاحتياط
                 setTimeout(() => {
                     if (!appOpened) window.open(REAL_LINKS.telegramWeb, '_blank');
                 }, 1500);
 
-                // إعادة الزر تلقائياً بعد 10 ثوانٍ
                 setTimeout(resetButtonState, 10000);
             };
 
@@ -417,14 +586,11 @@
                 const ua = navigator.userAgent;
                 const browserInfo = detectBrowser();
 
-                // تطبيق أنماط التطبيق على رسالة النجاح
                 applyAppStyles(elements.successMessage, browserInfo.appName);
                 
-                // تحديث نص الرسالة مع اسم التطبيق بلونه فقط
                 elements.successMessage.innerHTML = `جاري فتح المتصفح الخارجي من تطبيق <span class="app-name">${browserInfo.appName}</span>`;
                 elements.successMessage.style.display = 'block';
 
-                // إخفاء الرسالة بعد 10 ثواني مع تأثير التلاشي
                 setTimeout(() => {
                     elements.successMessage.classList.add('fade-out');
                     setTimeout(() => {
@@ -439,11 +605,9 @@
                     window.location.href = url;
                 }
                 
-                // إظهار اللودر مؤقتاً عند محاولة الخروج
                 elements.mainActionBtn.style.display = 'none';
                 elements.loader.style.display = 'block';
                 
-                // إعادة الزر بعد 10 ثواني
                 setTimeout(resetButtonState, 10000);
             };
 
@@ -457,21 +621,22 @@
                     }
                 });
 
-                // استعادة الزر فوراً عند العودة للصفحة (Focus)
                 window.addEventListener('focus', resetButtonState);
-
                 window.addEventListener('blur', () => {
                     if (!detectBrowser().isEmbedded) appOpened = true;
+                });
+                
+                // تكيف مع تغيير حجم النافذة
+                window.addEventListener('resize', function() {
+                    // إعادة حساب أي عناصر إذا لزم الأمر
                 });
             };
 
             const init = () => {
                 const browserInfo = detectBrowser();
                 if (browserInfo.isEmbedded) {
-                    // تطبيق أنماط التطبيق على رسالة التحذير
                     applyAppStyles(elements.browserWarning, browserInfo.appName);
                     
-                    // تحديث نص التحذير مع اسم التطبيق بلونه فقط
                     elements.browserWarning.innerHTML = `
                         <h3>يتم العرض من خلال تطبيق <span class="app-name">${browserInfo.appName}</span></h3>
                         <p>لضمان فتح القناة بشكل صحيح، يرجى الضغط للفتح في المتصفح الخارجي.</p>

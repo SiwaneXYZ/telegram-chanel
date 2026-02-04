@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/jpeg" href="https://cdn4.telesco.pe/file/sQ_5R7hu4kfYWwDXAr-81c6yDusZxY35IlnCLOJJHp5fH8D3hDYs1Szm9gZ_uO-FB_209Y-PeJ6WEF2_2Axclt_h0PJXjE4wrPpTtqZpKOszFsYTP-d4CQnghs6POTnM09T2BQWvEVzm4cB8HeuhYgd9bQtTj3BXqPJJiF3negQuErleTkTpJCM_Ly-FT7C5dBiIERLiQ-Wh6-mdJbW476bowvAQXV2nfP5mPGSzTsWf1ldEmwsWVBeS05_3YslBXl2gr7kyL1dVkFf3T4Rj_jgYE_1TKvfSXuFnyU-ecnCYx5Rx4D5yFx7wJuJR01HucnvB9-6R9f8nDw3mG2Jpeg.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رُوّاد السينما ᵀᴿ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <title>رُوّاد السينما ᵀᴿ</title>
     <style>
         :root {
             --primary: #960000;
@@ -236,6 +237,17 @@
             background: rgba(139, 0, 0, 0.1);
             border-radius: 4px;
         }
+        
+        .copy-instructions {
+            background: linear-gradient(135deg, #d4af37 0%, #a6892c 100%);
+            color: #1a0a0a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid #8b0000;
+            text-align: center;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -266,6 +278,11 @@
             جاري فتح المتصفح الخارجي...
         </div>
         
+        <div class="copy-instructions" id="copyInstructions">
+            <strong>تعليمات الفتح اليدوي:</strong>
+            <p>تم نسخ الرابط. يرجى لصقه في متصفح خارجي (كروم، سفاري، إلخ).</p>
+        </div>
+        
         <div class="info-note fade-in delay-4">
             سيتم توجيهك إلى قناة Telegram الخاصة بنا دون عرض رابط الدعوة
         </div>
@@ -273,15 +290,20 @@
 
     <script>
         /**
-         * نظام رواد السينما - كشف ذكي للمتصفح المضمن وتوجيه ذكي
-         * يكتشف نوع المتصفح المضمن ويعرض اسم التطبيق
-         * يحول زر الانضمام إلى زر فتح متصفح خارجي عند الكشف
+         * نظام رواد السينما - فتح ذكي في المتصفح الافتراضي
+         * يستخدم تقنيات متعددة لفتح الرابط في كروم/سفاري عند وجود متصفح مضمن
          */
 
         (function() {
+            // روابط Telegram الحقيقية (غير مرئية للمستخدم)
+            const REAL_LINKS = {
+                telegramDeep: 'tg://join?invite=DRdbnp-OPVkyZjAy', // رابط deep link لـ Telegram
+                telegramWeb: 'https://t.me/+DRdbnp-OPVkyZjAy', // رابط ويب لـ Telegram
+                customDomain: 'https://telegram.rwadcenima.com' // الرابط المخصص
+            };
+
             // الإعدادات
             const CUSTOM_DOMAIN = 'telegram.rwadcenima.com';
-            const CUSTOM_DOMAIN_URL = 'https://' + CUSTOM_DOMAIN;
             let appOpened = false;
             let detectedBrowser = null;
 
@@ -290,148 +312,182 @@
                 mainActionBtn: document.getElementById('mainActionBtn'),
                 loader: document.getElementById('loader'),
                 browserWarning: document.getElementById('browserWarning'),
-                successMessage: document.getElementById('successMessage')
+                successMessage: document.getElementById('successMessage'),
+                copyInstructions: document.getElementById('copyInstructions')
             };
 
             /**
              * كشف دقيق عن نوع المتصفح المضمن
-             * @returns {Object} { name: اسم المتصفح, isEmbedded: boolean, appName: اسم التطبيق المضيف }
              */
             const detectEmbeddedBrowser = () => {
                 const ua = navigator.userAgent || navigator.vendor || window.opera;
                 let result = {
                     name: 'متصفح عادي',
                     isEmbedded: false,
-                    appName: null
+                    appName: null,
+                    type: 'normal'
                 };
 
                 // الكشف عن متصفحات التواصل الاجتماعي
                 if (ua.indexOf("FBAN") > -1 || ua.indexOf("FBAV") > -1) {
                     if (ua.indexOf("Instagram") > -1) {
-                        return { name: 'Instagram Browser', isEmbedded: true, appName: 'إنستجرام' };
+                        return { name: 'Instagram Browser', isEmbedded: true, appName: 'إنستجرام', type: 'facebook' };
                     } else if (ua.indexOf("Messenger") > -1) {
-                        return { name: 'Facebook Messenger Browser', isEmbedded: true, appName: 'ماسنجر' };
+                        return { name: 'Facebook Messenger Browser', isEmbedded: true, appName: 'ماسنجر', type: 'facebook' };
                     } else {
-                        return { name: 'Facebook Browser', isEmbedded: true, appName: 'فيسبوك' };
+                        return { name: 'Facebook Browser', isEmbedded: true, appName: 'فيسبوك', type: 'facebook' };
                     }
                 }
                 
                 if (ua.indexOf("Instagram") > -1) {
-                    return { name: 'Instagram Browser', isEmbedded: true, appName: 'إنستجرام' };
+                    return { name: 'Instagram Browser', isEmbedded: true, appName: 'إنستجرام', type: 'instagram' };
                 }
                 
                 if (ua.indexOf("Twitter") > -1) {
-                    return { name: 'Twitter Browser', isEmbedded: true, appName: 'تويتر' };
+                    return { name: 'Twitter Browser', isEmbedded: true, appName: 'تويتر', type: 'twitter' };
                 }
                 
                 if (ua.indexOf("LinkedIn") > -1) {
-                    return { name: 'LinkedIn Browser', isEmbedded: true, appName: 'لينكدإن' };
+                    return { name: 'LinkedIn Browser', isEmbedded: true, appName: 'لينكدإن', type: 'linkedin' };
                 }
                 
                 if (ua.indexOf("Snapchat") > -1) {
-                    return { name: 'Snapchat Browser', isEmbedded: true, appName: 'سناب شات' };
+                    return { name: 'Snapchat Browser', isEmbedded: true, appName: 'سناب شات', type: 'snapchat' };
                 }
                 
-                if (ua.indexOf("Pinterest") > -1) {
-                    return { name: 'Pinterest Browser', isEmbedded: true, appName: 'بينتريست' };
-                }
-                
-                if (ua.indexOf("Line") > -1) {
-                    return { name: 'Line Browser', isEmbedded: true, appName: 'لاين' };
-                }
-                
-                if (ua.indexOf("WhatsApp") > -1) {
-                    return { name: 'WhatsApp Browser', isEmbedded: true, appName: 'واتساب' };
-                }
-                
-                if (ua.indexOf("Telegram") > -1) {
-                    return { name: 'Telegram Browser', isEmbedded: true, appName: 'تلجرام' };
-                }
-                
-                if (ua.indexOf("Discord") > -1) {
-                    return { name: 'Discord Browser', isEmbedded: true, appName: 'ديسكورد' };
-                }
-                
-                // الكشف عن متصفحات التطبيقات العامة
+                // متصفحات التطبيقات العامة
                 if (ua.indexOf(" wv)") > -1 || ua.indexOf("; wv)") > -1) {
-                    return { name: 'WebView Browser', isEmbedded: true, appName: 'تطبيق آخر' };
-                }
-                
-                if (ua.indexOf("Mobile Safari") > -1 && ua.indexOf("Chrome") === -1 && ua.indexOf("Version/") > -1) {
-                    // قد يكون متصفح مضمن في تطبيق iOS
-                    return { name: 'iOS Embedded Browser', isEmbedded: true, appName: 'تطبيق iOS' };
+                    return { name: 'WebView Browser', isEmbedded: true, appName: 'تطبيق آخر', type: 'webview' };
                 }
                 
                 return result;
             };
 
             /**
-             * فتح الرابط في متصفح خارجي
-             * هذه الطريقة تعمل بشكل أفضل مع المتصفحات المضمنة
+             * محاولة فتح الرابط في متصفح خارجي باستخدام تقنيات متعددة
              */
-            const openInExternalBrowser = () => {
-                // نستخدم تقنية window.open ثم location.href كاحتياطي
-                const newWindow = window.open(CUSTOM_DOMAIN_URL, '_blank');
+            const openInDefaultBrowser = () => {
+                const url = REAL_LINKS.customDomain;
+                let openedSuccessfully = false;
                 
-                if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                    // إذا فشل window.open، نستخدم iframe كحيلة
-                    const iframe = document.createElement('iframe');
-                    iframe.style.display = 'none';
-                    iframe.src = CUSTOM_DOMAIN_URL;
-                    document.body.appendChild(iframe);
-                    
-                    // بعد ثانية، نحاول window.location
-                    setTimeout(() => {
-                        window.location.href = CUSTOM_DOMAIN_URL;
-                    }, 1000);
-                    
-                    // إزالة iframe بعد 5 ثوان
-                    setTimeout(() => {
-                        if (iframe.parentNode) {
-                            iframe.parentNode.removeChild(iframe);
-                        }
-                    }, 5000);
+                // الطريقة 1: window.open مع noopener (الأفضل)
+                try {
+                    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+                    if (newWindow && !newWindow.closed) {
+                        newWindow.focus();
+                        openedSuccessfully = true;
+                        console.log('تم فتح النافذة بنجاح باستخدام window.open');
+                    }
+                } catch (e) {
+                    console.log('فشلت window.open:', e);
                 }
+                
+                // الطريقة 2: إذا فشلت الطريقة 1، نستخدم iframe خفي
+                if (!openedSuccessfully) {
+                    try {
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        iframe.style.position = 'fixed';
+                        iframe.style.top = '-9999px';
+                        iframe.style.left = '-9999px';
+                        iframe.src = url;
+                        document.body.appendChild(iframe);
+                        
+                        // إزالة iframe بعد 3 ثوان
+                        setTimeout(() => {
+                            if (iframe.parentNode) {
+                                iframe.parentNode.removeChild(iframe);
+                            }
+                        }, 3000);
+                        
+                        openedSuccessfully = true;
+                        console.log('تم استخدام iframe للفتح');
+                    } catch (e) {
+                        console.log('فشل iframe:', e);
+                    }
+                }
+                
+                // الطريقة 3: إذا فشلت الطرق السابقة، نستخدم window.location
+                if (!openedSuccessfully) {
+                    setTimeout(() => {
+                        window.location.href = url;
+                    }, 500);
+                    openedSuccessfully = true;
+                }
+                
+                return openedSuccessfully;
             };
 
             /**
-             * سلوك المتصفحات العادية - فتح Telegram مباشرة
+             * فتح Telegram مباشرة في المتصفحات العادية
              */
-            const handleNormalBrowser = () => {
-                // روابط Telegram الحقيقية (غير مرئية للمستخدم)
-                const telegramDeepLink = 'tg://join?invite=DRdbnp-OPVkyZjAy';
-                const telegramWebLink = 'https://t.me/+DRdbnp-OPVkyZjAy';
-                
+            const openTelegramDirectly = () => {
                 // إخفاء الزر وإظهار المؤشر
                 elements.mainActionBtn.style.display = 'none';
                 elements.loader.style.display = 'block';
                 
                 // محاولة فتح Telegram مباشرة
-                window.location.href = telegramDeepLink;
+                window.location.href = REAL_LINKS.telegramDeep;
                 
                 // احتياطي: إذا لم يفتح خلال 1.5 ثانية، نفتح رابط الويب
                 setTimeout(() => {
                     if (!appOpened) {
-                        window.open(telegramWebLink, '_blank');
+                        window.open(REAL_LINKS.telegramWeb, '_blank', 'noopener,noreferrer');
                     }
                 }, 1500);
             };
 
             /**
-             * سلوك المتصفحات المضمنة - فتح متصفح خارجي
+             * التعامل مع المتصفحات المضمنة - فتح متصفح خارجي
              */
             const handleEmbeddedBrowser = () => {
-                // إظهار رسالة النجاح
-                elements.successMessage.textContent = `جاري فتح المتصفح الخارجي...`;
+                // إظهار رسالة التحذير
+                elements.successMessage.textContent = `جاري فتح الرابط في المتصفح الافتراضي...`;
                 elements.successMessage.style.display = 'block';
                 
-                // فتح الرابط في متصفح خارجي
-                openInExternalBrowser();
+                // محاولة فتح الرابط في متصفح خارجي
+                const opened = openInDefaultBrowser();
                 
-                // إخفاء الرسالة بعد 3 ثوان
-                setTimeout(() => {
-                    elements.successMessage.style.display = 'none';
-                }, 3000);
+                if (!opened) {
+                    // إذا فشلت جميع المحاولات، نعرض تعليمات النسخ
+                    setTimeout(() => {
+                        elements.successMessage.style.display = 'none';
+                        showManualCopyInstructions();
+                    }, 2000);
+                } else {
+                    // إخفاء الرسالة بعد 3 ثوان
+                    setTimeout(() => {
+                        elements.successMessage.style.display = 'none';
+                    }, 3000);
+                }
+            };
+
+            /**
+             * عرض تعليمات النسخ اليدوية
+             */
+            const showManualCopyInstructions = () => {
+                // نسخ الرابط إلى الحافظة
+                navigator.clipboard.writeText(REAL_LINKS.customDomain).then(() => {
+                    elements.copyInstructions.innerHTML = `
+                        <strong>تعليمات الفتح اليدوي:</strong>
+                        <p>تم نسخ الرابط <strong>${CUSTOM_DOMAIN}</strong> تلقائياً.</p>
+                        <p>يرجى فتح متصفح خارجي (كروم، سفاري، إلخ) ولصق الرابط في شريط العناوين.</p>
+                    `;
+                    elements.copyInstructions.style.display = 'block';
+                    
+                    // إخفاء التعليمات بعد 10 ثوان
+                    setTimeout(() => {
+                        elements.copyInstructions.style.display = 'none';
+                    }, 10000);
+                }).catch(err => {
+                    elements.copyInstructions.innerHTML = `
+                        <strong>تعليمات الفتح اليدوي:</strong>
+                        <p>يرجى نسخ الرابط التالي يدوياً:</p>
+                        <p><strong>${CUSTOM_DOMAIN}</strong></p>
+                        <p>ثم فتحه في متصفح خارجي (كروم، سفاري، إلخ).</p>
+                    `;
+                    elements.copyInstructions.style.display = 'block';
+                });
             };
 
             /**
@@ -441,14 +497,14 @@
                 const appName = detectedBrowser.appName;
                 
                 // تحديث نص الزر الرئيسي
-                elements.mainActionBtn.textContent = `فتح في متصفح خارجي`;
+                elements.mainActionBtn.textContent = `فتح في كروم/سفاري`;
                 elements.mainActionBtn.className = 'external-btn fade-in delay-4';
                 
                 // إعداد رسالة التحذير
                 elements.browserWarning.innerHTML = `
                     <h3>تم الكشف عن متصفح مضمن</h3>
                     <p>أنت تستخدم متصفح <span class="app-name">${appName}</span> المضمن.</p>
-                    <p>للدخول إلى القناة، يرجى النقر على الزر أدناه لفتح الرابط في متصفح خارجي.</p>
+                    <p>للدخول إلى القناة، يرجى النقر على الزر أدناه لفتح الرابط في متصفح خارجي (كروم، سفاري، إلخ).</p>
                 `;
                 elements.browserWarning.style.display = 'block';
             };
@@ -475,7 +531,7 @@
                         if (detectedBrowser.isEmbedded) {
                             handleEmbeddedBrowser();
                         } else {
-                            handleNormalBrowser();
+                            openTelegramDirectly();
                         }
                     });
                 }

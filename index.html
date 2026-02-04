@@ -171,32 +171,32 @@
         .loader { display: none; width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 30px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* تحسينات رسائل المتصفح - بحجم أصغر وأنظف */
         .browser-warning {
             color: white;
-            padding: 18px 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             text-align: center;
             animation: fadeIn 0.5s ease;
-            backdrop-filter: blur(15px);
-            border: 2px solid;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
+            font-size: 0.95rem;
         }
 
         .browser-warning h3 { 
-            margin: 0 0 10px 0; 
-            font-size: 1.2rem; 
-            display: inline-block;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-weight: 700;
+            margin: 0 0 8px 0; 
+            font-size: 1rem; 
+            font-weight: 600;
+            color: inherit;
         }
 
         .browser-warning p { 
             margin: 0; 
-            font-size: 1rem;
-            line-height: 1.5;
+            line-height: 1.4;
+            opacity: 0.9;
         }
 
         .fade-in { animation: fadeInUp 0.8s ease forwards; opacity: 0; transform: translateY(20px); }
@@ -219,18 +219,20 @@
             transition: all 0.3s ease;
         }
         
+        /* رسالة النجاح - بحجم أصغر وأنظف */
         .success-message {
             color: white;
-            padding: 18px 20px;
-            border-radius: 12px;
-            margin: 15px 0;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 12px 0;
             display: none;
             animation: fadeIn 0.5s ease;
-            backdrop-filter: blur(15px);
-            border: 2px solid;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            font-weight: 600;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-weight: 500;
             text-align: center;
+            font-size: 0.95rem;
             opacity: 1;
             transition: opacity 0.5s ease;
         }
@@ -239,12 +241,11 @@
             opacity: 0;
         }
         
+        /* اسم التطبيق - نص فقط بدون خلفية */
         .app-name { 
             font-weight: bold; 
-            padding: 4px 12px; 
-            border-radius: 6px; 
-            margin: 0 5px;
-            display: inline-block;
+            margin: 0 3px;
+            display: inline;
         }
         
         .copy-instructions {
@@ -284,7 +285,7 @@
         <div class="success-message" id="successMessage">جاري فتح المتصفح الخارجي...</div>
         <div class="copy-instructions" id="copyInstructions"></div>
         
-        <div class="info-note fade-in delay-4">سيتم توجيهك إلى قناة Telegram الخاصة بنا دون عرض رابط الدعوة</div>
+        <div class="info-note fade-in delay-4">سيتم توجيهك إلى قناة Telegram الخاصة بنا.</div>
     </div>
 
     <script>
@@ -295,38 +296,37 @@
                 customDomain: 'https://telegram.rwadcenima.com'
             };
 
-            // ألوان التطبيقات المضمنة
+            // ألوان التطبيقات المضمنة - فقط ألوان النص
             const APP_COLORS = {
-                'Facebook': {
-                    primary: '#1877F2',
-                    secondary: 'rgba(24, 119, 242, 0.15)',
-                    gradient: 'linear-gradient(135deg, #1877F2 0%, #0D5FDB 100%)'
-                },
-                'Instagram': {
-                    primary: '#E4405F',
-                    secondary: 'rgba(228, 64, 95, 0.15)',
-                    gradient: 'linear-gradient(45deg, #833AB4 0%, #FD1D1D 50%, #F77737 100%)'
-                },
-                'Twitter': {
-                    primary: '#1DA1F2',
-                    secondary: 'rgba(29, 161, 242, 0.15)',
-                    gradient: 'linear-gradient(135deg, #1DA1F2 0%, #0D8BD9 100%)'
-                },
-                'LinkedIn': {
-                    primary: '#0A66C2',
-                    secondary: 'rgba(10, 102, 194, 0.15)',
-                    gradient: 'linear-gradient(135deg, #0A66C2 0%, #004182 100%)'
-                },
-                'Snapchat': {
-                    primary: '#FFFC00',
-                    secondary: 'rgba(255, 252, 0, 0.15)',
-                    gradient: 'linear-gradient(135deg, #FFFC00 0%, #FFD700 100%)'
-                },
-                'default': {
-                    primary: '#d4af37',
-                    secondary: 'rgba(212, 175, 55, 0.15)',
-                    gradient: 'linear-gradient(135deg, #d4af37 0%, #a6892c 100%)'
-                }
+                'Facebook': '#1877F2',        // أزرق فيسبوك
+                'Instagram': '#E4405F',       // وردي انستجرام
+                'Twitter': '#1DA1F2',         // أزرق تويتر
+                'LinkedIn': '#0A66C2',        // أزرق لينكدان
+                'Snapchat': '#FFFC00',        // أصفر سناب شات
+                'متصفح ويب': '#d4af37',       // ذهبي للمتصفحات الأخرى
+                'default': '#d4af37'          // ذهبي افتراضي
+            };
+
+            // خلفيات شفافة مع تدرج لوني خفيف
+            const APP_BACKGROUNDS = {
+                'Facebook': 'rgba(24, 119, 242, 0.05)',
+                'Instagram': 'rgba(228, 64, 95, 0.05)',
+                'Twitter': 'rgba(29, 161, 242, 0.05)',
+                'LinkedIn': 'rgba(10, 102, 194, 0.05)',
+                'Snapchat': 'rgba(255, 252, 0, 0.05)',
+                'متصفح ويب': 'rgba(212, 175, 55, 0.05)',
+                'default': 'rgba(212, 175, 55, 0.05)'
+            };
+
+            // ألوان الحدود الشفافة
+            const APP_BORDERS = {
+                'Facebook': 'rgba(24, 119, 242, 0.2)',
+                'Instagram': 'rgba(228, 64, 95, 0.2)',
+                'Twitter': 'rgba(29, 161, 242, 0.2)',
+                'LinkedIn': 'rgba(10, 102, 194, 0.2)',
+                'Snapchat': 'rgba(255, 252, 0, 0.2)',
+                'متصفح ويب': 'rgba(212, 175, 55, 0.2)',
+                'default': 'rgba(212, 175, 55, 0.2)'
             };
 
             const elements = {
@@ -343,7 +343,7 @@
             // دالة لاكتشاف التطبيق المضمن بدقة
             const detectBrowser = () => {
                 const ua = navigator.userAgent || navigator.vendor || window.opera;
-                let appName = 'متصفح مضمن';
+                let appName = 'متصفح ويب';
                 
                 if (/FBAN|FBAV/i.test(ua)) {
                     appName = 'Facebook';
@@ -363,19 +363,24 @@
                 return { isEmbedded, appName, ua };
             };
 
-            // دالة لتطبيق أنماط التطبيق على العنصر
+            // دالة لتطبيق أنماط التطبيق على العنصر (بسيطة وأنيقة)
             const applyAppStyles = (element, appName) => {
-                const colors = APP_COLORS[appName] || APP_COLORS.default;
+                const color = APP_COLORS[appName] || APP_COLORS.default;
+                const background = APP_BACKGROUNDS[appName] || APP_BACKGROUNDS.default;
+                const border = APP_BORDERS[appName] || APP_BORDERS.default;
                 
-                element.style.background = colors.secondary;
-                element.style.borderColor = colors.primary;
-                element.style.color = colors.primary;
+                // تطبيق الأنماط
+                element.style.background = background;
+                element.style.borderColor = border;
+                element.style.color = 'white'; // النص الأبيض دائمًا
                 
-                // تحديث نص اسم التطبيق بلون التطبيق
+                // تحديث اسم التطبيق بلونه فقط (بدون خلفية)
                 const appNameSpan = element.querySelector('.app-name');
                 if (appNameSpan) {
-                    appNameSpan.style.background = colors.primary;
-                    appNameSpan.style.color = 'white';
+                    appNameSpan.style.color = color;
+                    appNameSpan.style.fontWeight = '700';
+                    appNameSpan.style.background = 'none'; // بدون خلفية
+                    appNameSpan.style.padding = '0'; // بدون padding
                 }
             };
 
@@ -415,8 +420,8 @@
                 // تطبيق أنماط التطبيق على رسالة النجاح
                 applyAppStyles(elements.successMessage, browserInfo.appName);
                 
-                // تحديث نص الرسالة مع اسم التطبيق
-                elements.successMessage.innerHTML = `جاري فتح المتصفح الخارجي... <span class="app-name">${browserInfo.appName}</span>`;
+                // تحديث نص الرسالة مع اسم التطبيق بلونه فقط
+                elements.successMessage.innerHTML = `جاري فتح المتصفح الخارجي من تطبيق <span class="app-name">${browserInfo.appName}</span>`;
                 elements.successMessage.style.display = 'block';
 
                 // إخفاء الرسالة بعد 10 ثواني مع تأثير التلاشي
@@ -466,16 +471,14 @@
                     // تطبيق أنماط التطبيق على رسالة التحذير
                     applyAppStyles(elements.browserWarning, browserInfo.appName);
                     
-                    // تحديث نص التحذير مع اسم التطبيق
+                    // تحديث نص التحذير مع اسم التطبيق بلونه فقط
                     elements.browserWarning.innerHTML = `
-                        <h3 style="background: ${APP_COLORS[browserInfo.appName] ? APP_COLORS[browserInfo.appName].primary : APP_COLORS.default.primary}">
-                            متصفح <span class="app-name">${browserInfo.appName}</span> المقيد
-                        </h3>
+                        <h3>يتم العرض من خلال تطبيق <span class="app-name">${browserInfo.appName}</span></h3>
                         <p>لضمان فتح القناة بشكل صحيح، يرجى الضغط للفتح في المتصفح الخارجي.</p>
                     `;
                     
                     elements.browserWarning.style.display = 'block';
-                    elements.mainActionBtn.textContent = `فتح في المتصفح الخارجي (${browserInfo.appName})`;
+                    elements.mainActionBtn.textContent = `فتح في المتصفح الخارجي`;
                 }
                 setupEventListeners();
             };

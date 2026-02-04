@@ -134,7 +134,6 @@
         .stat-number { font-size: 1.8rem; font-weight: 800; color: var(--accent); display: block; margin-bottom: 8px; }
         .stat-label { font-size: 0.9rem; color: var(--text-secondary); }
 
-        /* --- زر الانضمام مع تأثير اللمعة --- */
         .join-btn {
             display: block;
             width: 100%;
@@ -156,7 +155,6 @@
 
         .join-btn:hover { transform: translateY(-6px); box-shadow: 0 20px 45px rgba(212, 175, 55, 0.2); }
         
-        /* تأثير اللمعة عند التمرير */
         .join-btn::after {
             content: '';
             position: absolute;
@@ -184,22 +182,13 @@
             animation: fadeIn 0.5s ease;
         }
 
-        .browser-warning h3 {
-            margin: 0 0 10px 0;
-            font-size: 1.1rem;
-            color: #8b0000;
-        }
+        .browser-warning h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #8b0000; }
 
         .fade-in { animation: fadeInUp 0.8s ease forwards; opacity: 0; transform: translateY(20px); }
         .delay-1 { animation-delay: 0.1s; } .delay-2 { animation-delay: 0.2s; } .delay-3 { animation-delay: 0.3s; } .delay-4 { animation-delay: 0.4s; }
         @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
         
-        .info-note {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 15px;
-            line-height: 1.5;
-        }
+        .info-note { color: var(--text-secondary); font-size: 0.9rem; margin-top: 15px; line-height: 1.5; }
         
         .external-btn {
             background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
@@ -215,11 +204,6 @@
             transition: all 0.3s ease;
         }
         
-        .external-btn:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 45px rgba(46, 125, 50, 0.3);
-        }
-        
         .success-message {
             background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
             color: white;
@@ -230,13 +214,7 @@
             animation: fadeIn 0.5s ease;
         }
         
-        .app-name {
-            font-weight: bold;
-            color: #8b0000;
-            padding: 2px 6px;
-            background: rgba(139, 0, 0, 0.1);
-            border-radius: 4px;
-        }
+        .app-name { font-weight: bold; color: #8b0000; padding: 2px 6px; background: rgba(139, 0, 0, 0.1); border-radius: 4px; }
         
         .copy-instructions {
             background: linear-gradient(135deg, #d4af37 0%, #a6892c 100%);
@@ -272,35 +250,19 @@
         <button class="join-btn fade-in delay-4" id="mainActionBtn">انضم إلى القناة الآن</button>
         <div class="loader" id="loader"></div>
         
-        <div class="success-message" id="successMessage">
-            جاري فتح المتصفح الخارجي...
-        </div>
+        <div class="success-message" id="successMessage">جاري فتح المتصفح الخارجي...</div>
+        <div class="copy-instructions" id="copyInstructions"></div>
         
-        <div class="copy-instructions" id="copyInstructions">
-            <strong>تعليمات الفتح اليدوي:</strong>
-            <p>تم نسخ الرابط. يرجى لصقه في متصفح خارجي (كروم، سفاري، إلخ).</p>
-        </div>
-        
-        <div class="info-note fade-in delay-4">
-            سيتم توجيهك إلى قناة Telegram الخاصة بنا دون عرض رابط الدعوة
-        </div>
+        <div class="info-note fade-in delay-4">سيتم توجيهك إلى قناة Telegram الخاصة بنا دون عرض رابط الدعوة</div>
     </div>
 
     <script>
-        /**
-         * نظام رواد السينما - فتح ذكي في المتصفح الافتراضي
-         */
-
         (function() {
             const REAL_LINKS = {
-                telegramDeep: 'tg://join?invite=DRdbnp-OPVkyZjAy', 
-                telegramWeb: 'https://t.me/+DRdbnp-OPVkyZjAy', 
-                customDomain: 'https://telegram.rwadcenima.com' 
+                telegramDeep: 'tg://join?invite=DRdbnp-OPVkyZjAy',
+                telegramWeb: 'https://t.me/+DRdbnp-OPVkyZjAy',
+                customDomain: 'https://telegram.rwadcenima.com'
             };
-
-            const CUSTOM_DOMAIN = 'telegram.rwadcenima.com';
-            let appOpened = false;
-            let detectedBrowser = null;
 
             const elements = {
                 mainActionBtn: document.getElementById('mainActionBtn'),
@@ -310,95 +272,77 @@
                 copyInstructions: document.getElementById('copyInstructions')
             };
 
-            const detectEmbeddedBrowser = () => {
-                const ua = navigator.userAgent || navigator.vendor || window.opera;
-                let result = { name: 'متصفح عادي', isEmbedded: false, appName: null, type: 'normal' };
+            let appOpened = false;
 
-                if (ua.indexOf("FBAN") > -1 || ua.indexOf("FBAV") > -1) {
-                    if (ua.indexOf("Instagram") > -1) return { name: 'Instagram Browser', isEmbedded: true, appName: 'إنستجرام', type: 'facebook' };
-                    return { name: 'Facebook Browser', isEmbedded: true, appName: 'فيسبوك', type: 'facebook' };
-                }
-                if (ua.indexOf("Instagram") > -1) return { name: 'Instagram Browser', isEmbedded: true, appName: 'إنستجرام', type: 'instagram' };
-                if (ua.indexOf("wv)") > -1 || ua.indexOf("; wv)") > -1) return { name: 'WebView Browser', isEmbedded: true, appName: 'تطبيق آخر', type: 'webview' };
-                
-                return result;
+            const detectBrowser = () => {
+                const ua = navigator.userAgent || navigator.vendor || window.opera;
+                const isEmbedded = /FBAN|FBAV|Instagram|Twitter|LinkedIn|Snapchat|wv/i.test(ua);
+                return { isEmbedded, ua };
             };
 
-            /**
-             * التعديل الجوهري هنا لفرض الخروج
-             */
-            const openInDefaultBrowser = () => {
-                const url = REAL_LINKS.customDomain;
-                const ua = navigator.userAgent;
-
-                // إذا كان أندرويد، نستخدم الـ Intent السحري للخروج فوراً
-                if (/Android/i.test(ua)) {
-                    const intent = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.chrome;end`;
-                    window.location.href = intent;
-                    
-                    // احتياطي في حال عدم وجود كروم
-                    setTimeout(() => {
-                        window.location.href = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;action=android.intent.action.VIEW;end`;
-                    }, 500);
-                    return true;
-                }
-
-                // للـ iOS أو غيره، نحاول الطرق التقليدية التي وضعتها أنت
-                try {
-                    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
-                    if (newWindow) return true;
-                } catch (e) {}
-                
-                window.location.href = url;
-                return true;
+            // دالة استعادة حالة الزر الأصلية
+            const resetButtonState = () => {
+                elements.mainActionBtn.style.display = 'block';
+                elements.loader.style.display = 'none';
+                appOpened = false;
             };
 
             const openTelegramDirectly = () => {
                 elements.mainActionBtn.style.display = 'none';
                 elements.loader.style.display = 'block';
+
                 window.location.href = REAL_LINKS.telegramDeep;
+                
+                // فتح الويب كاحتياط
                 setTimeout(() => {
-                    if (!appOpened) window.open(REAL_LINKS.telegramWeb, '_blank', 'noopener,noreferrer');
+                    if (!appOpened) window.open(REAL_LINKS.telegramWeb, '_blank');
                 }, 1500);
+
+                // إعادة الزر تلقائياً بعد 10 ثوانٍ
+                setTimeout(resetButtonState, 10000);
             };
 
-            const handleEmbeddedBrowser = () => {
-                elements.successMessage.textContent = `جاري فتح الرابط في المتصفح الافتراضي...`;
-                elements.successMessage.style.display = 'block';
-                openInDefaultBrowser();
-            };
+            const forceOpenExternal = () => {
+                const url = REAL_LINKS.customDomain;
+                const ua = navigator.userAgent;
 
-            const setupEmbeddedBrowserInterface = () => {
-                elements.mainActionBtn.textContent = `فتح في كروم/سفاري`;
-                elements.mainActionBtn.className = 'external-btn fade-in delay-4';
-                elements.browserWarning.innerHTML = `<h3>متصفح مقيد</h3><p>أنت تستخدم متصفح <span class="app-name">${detectedBrowser.appName}</span>. يرجى الضغط للفتح في متصفح خارجي.</p>`;
-                elements.browserWarning.style.display = 'block';
-            };
-
-            const setupNormalBrowserInterface = () => {
-                elements.browserWarning.style.display = 'none';
-                elements.mainActionBtn.textContent = 'انضم إلى القناة الآن';
-                elements.mainActionBtn.className = 'join-btn fade-in delay-4';
+                if (/android/i.test(ua)) {
+                    window.location.href = `intent://${url.replace(/^https?:\/\//, '')}#Intent;scheme=https;action=android.intent.action.VIEW;package=com.android.chrome;end`;
+                } else {
+                    window.location.href = url;
+                }
+                
+                // إظهار اللودر مؤقتاً عند محاولة الخروج
+                elements.mainActionBtn.style.display = 'none';
+                elements.loader.style.display = 'block';
+                setTimeout(resetButtonState, 10000);
             };
 
             const setupEventListeners = () => {
                 elements.mainActionBtn.addEventListener('click', () => {
-                    if (detectedBrowser.isEmbedded) handleEmbeddedBrowser();
-                    else openTelegramDirectly();
-                });
-
-                window.addEventListener('blur', () => {
-                    if (!detectedBrowser.isEmbedded) {
-                        appOpened = true;
-                        elements.loader.style.display = 'none';
+                    if (detectBrowser().isEmbedded) {
+                        elements.successMessage.style.display = 'block';
+                        forceOpenExternal();
+                    } else {
+                        openTelegramDirectly();
                     }
                 });
-            }
+
+                // استعادة الزر فوراً عند العودة للصفحة (Focus)
+                window.addEventListener('focus', resetButtonState);
+
+                window.addEventListener('blur', () => {
+                    if (!detectBrowser().isEmbedded) appOpened = true;
+                });
+            };
 
             const init = () => {
-                detectedBrowser = detectEmbeddedBrowser();
-                if (detectedBrowser.isEmbedded) setupEmbeddedBrowserInterface();
-                else setupNormalBrowserInterface();
+                const info = detectBrowser();
+                if (info.isEmbedded) {
+                    elements.browserWarning.innerHTML = `<h3>متصفح مقيد</h3><p>لضمان فتح القناة بشكل صحيح، يرجى الضغط للفتح في المتصفح الخارجي.</p>`;
+                    elements.browserWarning.style.display = 'block';
+                    elements.mainActionBtn.textContent = "فتح في المتصفح الخارجي";
+                }
                 setupEventListeners();
             };
 
